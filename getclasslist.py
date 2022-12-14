@@ -29,8 +29,9 @@ courselist = parser.select('ul.nav li.dropdown div.dropdown-menu ul li a')
 
 for i in courselist:
     try:
-        if len((i.text).split(' ')[0]) == 4:
-            print(i.text)
-            print()
+        yearnumber = (i.text).split(' ')[0]
+        if len(yearnumber) == 4 and '111' in yearnumber and ('[' in i.text) and (']' in i.text):
+            print(i.text,end="\t")
+            print(i.text[-5:-1])
     except:
         pass
