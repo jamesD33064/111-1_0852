@@ -39,7 +39,7 @@ def getcouselist():
             pass
     return li
 
-def getcoursetime(coursenumber):
+def getcoursedetail(coursenumber):
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36',
     }
@@ -90,11 +90,14 @@ def getcoursetime(coursenumber):
     data = json.loads(data)['d']['items'][0]['scr_period']
     return data
 
+def parasecoursetime(detail):
+    
+    print(detail)
 
 if __name__ == '__main__':
     load_dotenv()
     courselist = getcouselist()
     print(courselist)
     for i in courselist:
-        coursedetail = getcoursetime(i)
-        print(coursedetail)
+        coursedetail = getcoursedetail(i)
+        parasecoursetime(coursedetail)
