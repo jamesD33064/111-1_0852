@@ -27,9 +27,7 @@ def getcouselist():
     response = session.post("https://ilearn2.fcu.edu.tw/login/index.php",data=login_data,headers=headers)
     parser = BeautifulSoup(response.text, 'lxml')
     courselist = parser.select('ul.nav li.dropdown div.dropdown-menu ul li a')
-
     li=[]
-
     for i in courselist:
         try:
             yearnumber = (i.text).split(' ')[0]
@@ -42,11 +40,9 @@ def getcouselist():
     return li
 
 def getcoursetime(coursenumber):
-
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36',
     }
-
     json_data = {
         "baseOptions": {
             "lang": "cht",
@@ -92,7 +88,6 @@ def getcoursetime(coursenumber):
     data = requests.post(url, headers=headers, json=json_data)
     data = data.text.replace('\\','').replace('"{','{').replace('}"','}')
     data = json.loads(data)['d']['items'][0]['scr_period']
-
     return data
 
 
@@ -101,4 +96,5 @@ if __name__ == '__main__':
     courselist = getcouselist()
     print(courselist)
     for i in courselist:
-        print(getcoursetime(i))
+        coursedetail = getcoursetime(i)
+        print(coursedetail)
