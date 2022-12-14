@@ -3,7 +3,7 @@ from dotenv import load_dotenv
 import requests
 from bs4 import BeautifulSoup
 import json
-
+import pandas as pd
 
 def getcouselist():
     username = os.getenv('username')
@@ -90,14 +90,47 @@ def getcoursedetail(coursenumber):
     data = json.loads(data)['d']['items'][0]['scr_period']
     return data
 
-def parasecoursetime(detail):
-    
-    print(detail)
+finalcourselist = {
+    '一':{1:'',2:'',3:'',4:'',5:'',6:'',7:'',8:'',9:'',10:'',11:'',12:'',13:''},
+    '二':{1:'',2:'',3:'',4:'',5:'',6:'',7:'',8:'',9:'',10:'',11:'',12:'',13:''},
+    '三':{1:'',2:'',3:'',4:'',5:'',6:'',7:'',8:'',9:'',10:'',11:'',12:'',13:''},
+    '四':{1:'',2:'',3:'',4:'',5:'',6:'',7:'',8:'',9:'',10:'',11:'',12:'',13:''},
+    '五':{1:'',2:'',3:'',4:'',5:'',6:'',7:'',8:'',9:'',10:'',11:'',12:'',13:''}
+}
+def parasecoursetime(detail , classnumber):
+    daylist=['一','二','三','四','五']
+    data = detail.split('(')
+    for i in data:
+        try:
+            if(i[0] in daylist):
+                time = i.split(' ')
+                # print(time)
+                try:#如果連續兩節以上
+                    duotime = time[0].split('-')
+                    # print(int(duotime[0][-2:]),int(duotime[1]))
+                    for t in range(int(duotime[0][-2:]),int(duotime[1])+1):
+                        # print(t)
+                        finalcourselist[i[0]][t] = classnumber
+                except:#單節
+                    finalcourselist[i[0]][int(time[0][-2:])] = classnumber
+        except:
+            pass
+    print(detail , classnumber)
 
 if __name__ == '__main__':
     load_dotenv()
     courselist = getcouselist()
-    print(courselist)
+    print('課程清單:')
+    print(courselist,end='\n\n')
+
+    print('課程時間:')
     for i in courselist:
         coursedetail = getcoursedetail(i)
-        parasecoursetime(coursedetail)
+        parasecoursetime(coursedetail , i)
+    
+    print('\n課表(json):')
+    print(finalcourselist)
+
+    #to excel
+    df = pd.DataFrame(finalcourselist)
+    df.to_excel('result.xlsx')
