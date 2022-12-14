@@ -24,8 +24,13 @@ login_data['logintoken'] = parser.select("#login > input[type=hidden]")[0]['valu
 
 response = session.post("https://ilearn2.fcu.edu.tw/login/index.php",data=login_data,headers=headers)
 parser = BeautifulSoup(response.text, 'lxml')
-test = parser.select('ul.nav li.dropdown div.dropdown-menu')
-# print(test)
-for i in test:
-    print(i.text)
-# dropdown
+courselist = parser.select('ul.nav li.dropdown div.dropdown-menu ul li a')
+# print(courselist[0].text)
+
+for i in courselist:
+    try:
+        if len((i.text).split(' ')[0]) == 4:
+            print(i.text)
+            print()
+    except:
+        pass
