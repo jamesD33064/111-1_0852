@@ -100,6 +100,8 @@ finalcourselist = {
 def parasecoursetime(detail , classnumber):
     daylist=['一','二','三','四','五']
     data = detail.split('(')
+    # print(data)
+    # print(detail,classnumber)
     for i in data:
         try:
             if(i[0] in daylist):
