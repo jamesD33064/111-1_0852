@@ -9,7 +9,7 @@ def getscore():
 
     username = os.getenv('username')
     pw = os.getenv('pw')
-    login_data={
+    login_data = {
         'username': username,
         'password': pw,
         'anchor':'', 
@@ -46,8 +46,8 @@ def getscore():
                     parser = BeautifulSoup(response.text, 'lxml')
                     course_name = parser.select("#CourseName")[0].text
                     final_score = parser.select("#final_score")[0].text
-                    if '未' in final_score :
-                        continue 
+                    # if '未' in final_score :
+                    #     continue 
                     print("----------------------------------------------------")
                     print(course_name)
                     print(final_score)
